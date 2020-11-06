@@ -11,7 +11,6 @@
 
     <artifactId>springcloud-api</artifactId>
 
-
     <!--
         当前module需要的依赖， 如果父类中已经配置了
     -->
@@ -20,6 +19,19 @@
             <groupId>org.projectlombok</groupId>
             <artifactId>lombok</artifactId>
         </dependency>
+
+        <!--
+            导入feign
+        -->
+        <dependency>
+            <groupId>org.springframework.cloud</groupId>
+            <artifactId>spring-cloud-starter-feign</artifactId>
+            <version>1.4.6.RELEASE</version>
+        </dependency>
+
     </dependencies>
+
+
+
 
 </project>

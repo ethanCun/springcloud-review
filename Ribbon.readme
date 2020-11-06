@@ -1,0 +1,96 @@
+
+Ribbon:
+    从注册中心获取可用的服务，做负载均衡请求
+
+    Ribbon跟客户端相关，为客户端提供负载均衡算法
+
+
+    将客户的请求，平均或者均衡地分配在多台服务器上
+
+    常见的均衡负载工具有： nginx lvs
+
+
+Ribbon使用：
+
+            <!--
+                Ribbon
+            -->
+            <!-- https://mvnrepository.com/artifact/org.springframework.cloud/spring-cloud-starter-ribbon -->
+            <dependency>
+                <groupId>org.springframework.cloud</groupId>
+                <artifactId>spring-cloud-starter-ribbon</artifactId>
+                <version>1.4.6.RELEASE</version>
+            </dependency>
+
+            @SpringBootApplication
+            @EnableEurekaClient //开启eureka客户端
+            //开启Ribbon客户端负载均衡，定义负载均衡算法
+            @RibbonClient(name = "SPRINGCLOUD-PROVIDER-USER", configuration = MyRule.class)
+            public class UserConsume_80 {
+
+                public static void main(String[] args) {
+
+                    SpringApplication.run(UserConsume_80.class, args);
+                }
+            }
+
+            @Configuration
+            public class ConfigBean {
+
+                //配置Ribbon负载均衡实现, Ribbon基于客户端
+
+                /**
+                 * IRule: 负载均衡算法：
+                 *      1. AvailabilityFilteringRule： 过滤掉崩溃的服务，优先选择正常
+                 *          运行的服务；
+                 *      2. RoundRobinRule： 轮询
+                 *      3. RandomRule：随机
+                 *      4. WeightedResponseTimeRule： 权重
+                 *      5. RetryRule：重试, 先按照轮询获取服务，如果失败，则会在指定高德时间内重试
+                 */
+                @LoadBalanced
+                @Bean
+                public RestTemplate restTemplate(){
+
+                    RestTemplate restTemplate = new RestTemplate();
+                    restTemplate.getMessageConverters()
+                            .add(new StringHttpMessageConverter(
+                                    Charset.forName("utf-8")));
+
+                    return restTemplate;
+                }
+
+            }
+
+
+            @RestController
+            @RequestMapping(value = "/consume")
+            public class UserConsumeController {
+
+                //消费者不应该有service层 restTemplate: 简单的restful模板
+                @Autowired
+                private RestTemplate restTemplate;
+
+                //Ribbon： 通过服务名称去访问 注意是大写 应用名称必须大写
+                public static final String REST_URL_PREFIX="http://SPRINGCLOUD-PROVIDER-USER";
+
+
+                @RequestMapping(value = "/userList")
+                public List<User> userList(){
+
+                    return this.restTemplate.getForObject(REST_URL_PREFIX+"/user/list", List.class);
+                }
+
+                @RequestMapping(value = "/userWithId/{id}")
+                public User userList(@PathVariable("id") Integer id){
+
+                    //参数： url, 返回类型, 请求参数
+                    return this.restTemplate.getForObject(REST_URL_PREFIX+"/user/selectById?id="+id, User.class);
+                }
+
+                @RequestMapping(value = "/add")
+                public boolean addUser(User user) throws Exception{
+
+                    return this.restTemplate.postForObject(REST_URL_PREFIX+"/user/add", user, Boolean.class);
+                }
+            }

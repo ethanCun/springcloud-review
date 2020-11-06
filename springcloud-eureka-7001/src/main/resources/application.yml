@@ -1,0 +1,27 @@
+
+server:
+  port: 7001
+
+
+#eureka配置
+# 配置注册中心集群 7001需要关联7002 7003， 7002关联7001,7003, 7003关联7001，7002
+# 其中一个崩了可以告诉其他注册中心继续玩
+eureka:
+  instance:
+    hostname: eureka7001.com
+  client:
+    # 是否想eureka注册中心注册自己  服务器自己不需要注册
+    register-with-eureka: false
+    # false：表示自己为注册中心
+    fetch-registry: false
+    # 监控页面
+    service-url:
+      # 单机版注册中心直接关联自己的hostname和port
+      #defaultZone: http://${eureka.instance.hostname}:${server.port}/eureka/
+      # 集群版注册中心：7001关联7002和7003, ongoing逗号连接
+      # 自定义本机域名映射： vim /etc/hosts, 127.0.0.1  eureka7002.com
+      defaultZone: http://eureka7002.com:7002/eureka,http://eureka7003.com:7003/eureka/
+  server:
+    # 是否开启自我保护机制， 在微服务挂掉之后， eureka不会立即删除微服务数据，
+    # 只是微服务的状态由up转变为down
+    enable-self-preservation: true

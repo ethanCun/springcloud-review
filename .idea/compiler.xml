@@ -7,9 +7,14 @@
         <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
         <outputRelativeToContentRoot value="true" />
         <module name="springcloudapi" />
+        <module name="springcloudconsumeruserfeign" />
         <module name="springcloudconsumeuser80" />
-        <module name="springcloudprovideruser" />
+        <module name="springcloudeureka7001" />
+        <module name="springcloudeureka7002" />
+        <module name="springcloudeureka7003" />
         <module name="springcloudprovideruser8001" />
+        <module name="springcloudprovideruser8002" />
+        <module name="springcloudprovideruser8003" />
       </profile>
     </annotationProcessing>
     <bytecodeTargetLevel target="8">

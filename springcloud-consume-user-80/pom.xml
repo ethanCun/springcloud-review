@@ -29,6 +29,27 @@
             <artifactId>spring-boot-devtools</artifactId>
         </dependency>
 
+        <!--
+            Ribbon
+        -->
+        <!-- https://mvnrepository.com/artifact/org.springframework.cloud/spring-cloud-starter-ribbon -->
+        <dependency>
+            <groupId>org.springframework.cloud</groupId>
+            <artifactId>spring-cloud-starter-ribbon</artifactId>
+            <version>1.4.6.RELEASE</version>
+        </dependency>
+
+
+        <!--
+            加入eureka客户端依赖, 服务消费者
+        -->
+        <!-- https://mvnrepository.com/artifact/org.springframework.cloud/spring-cloud-starter-eureka -->
+        <dependency>
+            <groupId>org.springframework.cloud</groupId>
+            <artifactId>spring-cloud-starter-eureka</artifactId>
+            <version>1.4.6.RELEASE</version>
+        </dependency>
+
     </dependencies>
 
 </project>

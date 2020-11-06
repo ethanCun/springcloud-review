@@ -19,7 +19,9 @@ public class UserConsumeController {
     @Autowired
     private RestTemplate restTemplate;
 
-    public static final String REST_URL_PREFIX="http://localhost:8001";
+    //Ribbon： 通过服务名称去访问 注意是大写 应用名称必须大写
+    public static final String REST_URL_PREFIX="http://SPRINGCLOUD-PROVIDER-USER";
+
 
     @RequestMapping(value = "/userList")
     public List<User> userList(){

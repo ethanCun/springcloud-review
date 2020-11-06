@@ -1,0 +1,45 @@
+Feign集成了Ribbon，
+
+Ribbon需要通过微服务名称，配合restTemplate来调用服务提供者：
+
+
+
+Feign使用接口的方式来调用，更加简洁：
+
+        <!--
+            导入feign
+        -->
+        <dependency>
+            <groupId>org.springframework.cloud</groupId>
+            <artifactId>spring-cloud-starter-feign</artifactId>
+            <version>1.4.6.RELEASE</version>
+        </dependency>
+
+    //feign: 可以被服务直接调用, 面向接口，和Ribbon不一样不需要通过写微服务名称调用
+    //value: 微服务名字
+    @Component
+    @FeignClient(value = "SPRINGCLOUD-PROVIDER-USER")
+    public interface UserService {
+
+        @GetMapping(value = "/feign/user/list")
+        List<User> userList();
+
+        @GetMapping(value = "/feign/user/get/{id}")
+        User userWithId(@PathVariable("id") int id);
+
+        @PostMapping(value = "/feign/user/add")
+        boolean addUser(@RequestBody User user);
+    }
+
+
+    @SpringBootApplication
+    @EnableEurekaClient //开启eureka客户端
+    @EnableFeignClients(basePackages = {"com.ethan.springcloud"}) //开启Feign扫描宝
+    @ComponentScan(basePackages = {"com.ethan.springcloud"}) //扫描自己的包
+    public class UserConsume_Feign {
+
+        public static void main(String[] args) {
+
+            SpringApplication.run(UserConsume_Feign.class, args);
+        }
+    }
