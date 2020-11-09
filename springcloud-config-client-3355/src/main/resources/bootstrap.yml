@@ -1,0 +1,16 @@
+
+# bootstrap.yml: 系统级别的加载器
+# application.yml: 用户级别的加载器
+
+# 客户端连接服务器， 服务器链接github
+spring:
+  cloud:
+    config:
+      uri: http://localhost:3344
+      # 需要从git读取的资源名称, 不需要后缀
+      name: config-client
+      # 需要从git上读取的环境
+      profile: dev
+      # 需要从git那个分支上读取配置文件
+      label: master
+

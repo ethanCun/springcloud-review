@@ -1,0 +1,12 @@
+
+# 如果在bootstrap.yml中配置了springcloud config客户端的信息，
+# 这个端口会被从github读取的信息覆盖掉
+# 比如，这里的实际启动端口是git上master分支下dev环境的8021端口
+server:
+  port: 3355
+
+spring:
+  application:
+    name: springcloud-config-client-3355
+
+
