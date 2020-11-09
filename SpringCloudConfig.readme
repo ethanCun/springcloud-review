@@ -1,0 +1,89 @@
+
+Springcloud config:
+    CS架构，需要先写服务端，开启服务端
+
+# 服务端：
+            <!--
+                springcloud config
+            -->
+            <dependency>
+                <groupId>org.springframework.cloud</groupId>
+                <artifactId>spring-cloud-config-server</artifactId>
+                <version>2.1.1.RELEASE</version>
+            </dependency>
+
+# 服务端配置:
+
+    # 客户端都是连服务端这个ip和port
+    server:
+      port: 3344
+
+    spring:
+      application:
+        name: springcloud-config-server-3344
+      cloud:
+        config:
+          server:
+            git:
+              # 连接远程配置仓库 https
+              uri: https://github.com/ethanCun/springcloud-config.git
+
+
+# 开启Config服务： @EnableConfigServer
+
+        @SpringBootApplication
+        @EnableConfigServer //开启springcloud config
+        public class ConfigServerApplication_3344 {
+
+            public static void main(String[] args) {
+
+                SpringApplication.run(ConfigServerApplication_3344.class, args);
+            }
+        }
+
+
+
+# 客户端：
+
+            <!--
+                springcloud starter config
+            -->
+            <dependency>
+                <groupId>org.springframework.cloud</groupId>
+                <artifactId>spring-cloud-starter-config</artifactId>
+                <version>2.1.1.RELEASE</version>
+            </dependency>
+
+
+# 客户端配置:
+
+
+# bootstrap.yml: 系统级别的加载器
+# application.yml: 用户级别的加载器
+
+# bootstrap.yml:
+# 客户端连接服务器， 服务器链接github
+spring:
+  cloud:
+    config:
+      # 需要从git读取的资源名称, 不需要后缀
+      name: config-client
+      # 需要从git上读取的环境
+      profile: dev
+      # 需要从git那个分支上读取配置文件
+      label: master
+      # 本地config服务端地址
+      uri: http://localhost:3344
+
+
+# application.yml:
+
+# 如果在bootstrap.yml中配置了springcloud config客户端的信息，
+# 这个端口会被从github读取的信息覆盖掉
+# 比如，这里的实际启动端口是git上master分支下dev环境的8021端口
+server:
+  port: 3355
+
+spring:
+  application:
+    name: springcloud-config-client-3355

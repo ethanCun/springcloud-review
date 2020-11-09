@@ -1,0 +1,37 @@
+
+SpringCloud config:
+    配置文件统一放到git管理， 需要启动config服务端；
+
+springcloud config服务端：
+            <!--
+                springcloud config
+            -->
+            <dependency>
+                <groupId>org.springframework.cloud</groupId>
+                <artifactId>spring-cloud-config-server</artifactId>
+                <version>2.1.1.RELEASE</version>
+            </dependency>
+
+
+服务端配置：
+
+server:
+  port: 3344
+
+spring:
+  application:
+    name: springcloud-config-server-3344
+  cloud:
+    config:
+      server:
+        git:
+          # 连接远程配置仓库 https
+          uri: https://github.com/ethanCun/springcloud-config.git
+
+
+开启config服务：
+
+
+
+
+
