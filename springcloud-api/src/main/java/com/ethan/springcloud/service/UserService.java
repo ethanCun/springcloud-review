@@ -13,7 +13,9 @@ import java.util.List;
 //feign: 可以被服务直接调用, 面向接口，和Ribbon不一样不需要通过写微服务名称调用
 //value: 微服务名字
 @Component
-@FeignClient(value = "SPRINGCLOUD-PROVIDER-USER")
+//开启服务降级fallbackFactory: 指明服务降级处理工厂类
+@FeignClient(value = "SPRINGCLOUD-PROVIDER-USER",
+        fallbackFactory = UserClientFallbackFactory.class)
 public interface UserService {
 
     //value是服务提供者的方法

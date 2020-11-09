@@ -1,0 +1,103 @@
+
+服务熔断：
+      某个服务超时或者异常，采用另外的方法来处理，如使用另外一个方法处理；
+
+
+服务降级：
+      某个服务请求量大，资源不够用，将其他服务资源调整到当前请求数量大的服务，
+      请求量正常后，在将其他服务恢复到它自己的状态；
+      当被降级的服务器关闭之后，请求过来后悔返回我们自定义的信息，
+      这些信息在一个实现了FallbackFactory的类中自定义
+
+
+服务熔断在服务端处理，使用@EnableCircuitBreaker开启对断路器的支持：
+
+@SpringBootApplication
+@EnableEurekaClient //开启注册中心客户端
+@EnableDiscoveryClient //支持服务发现
+//添加对熔断(断路器)的支持
+@EnableCircuitBreaker
+public class UserHystrixProvider_8001 {
+
+    public static void main(String[] args) {
+
+        SpringApplication.run(UserHystrixProvider_8001.class);
+    }
+
+}
+
+使用@HystrixCommand指定方法发生错误的处理方法：
+
+@HystrixCommand(fallbackMethod = "hystrixUserWithId")
+    @RequestMapping(value = "/user/{id}")
+    public User userWithId(@PathVariable("id") Integer id){
+
+        User user = this.userService.userWithId(id);
+
+        if(user == null){
+
+            throw new RuntimeException("不存在该客户");
+        }
+
+
+
+        return user;
+    }
+
+
+    public User hystrixUserWithId(@PathVariable("id") Integer id){
+
+        return new User().setId(id).setName("没有对应的用户信息");
+    }
+
+
+
+
+服务降级发生在客户端， 如指定feign的服务降级处理：
+
+//feign: 可以被服务直接调用, 面向接口，和Ribbon不一样不需要通过写微服务名称调用
+//value: 微服务名字
+@Component
+//开启服务降级fallbackFactory: 指明服务降级处理工厂类
+@FeignClient(value = "SPRINGCLOUD-PROVIDER-USER",
+        fallbackFactory = UserClientFallbackFactory.class)
+public interface UserService {
+
+    //value是服务提供者的方法
+    @GetMapping(value = "/user/list")
+    List<User> userList();
+
+    @GetMapping(value = "/user/selectById/{id}")
+    User userWithId(@PathVariable("id") int id);
+
+    @PostMapping(value = "/user/add")
+    boolean addUser(@RequestBody User user);
+}
+
+
+//服务降级工厂处理类
+@Component
+public class UserClientFallbackFactory implements FallbackFactory {
+
+    public UserService create(Throwable throwable) {
+
+        return new UserService() {
+
+            public List<User> userList() {
+                return null;
+            }
+
+            public User userWithId(int id) {
+                return new User().setName("不存在")
+                        .setDbSource("服务降级，服务已关闭");
+            }
+
+            public boolean addUser(User user) {
+                return false;
+            }
+        };
+
+    }
+}
+
+

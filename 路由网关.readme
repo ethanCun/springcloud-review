@@ -1,0 +1,55 @@
+
+路由网管：
+
+           <!--
+                zuul路由网管
+            -->
+            <dependency>
+                <groupId>org.springframework.cloud</groupId>
+                <artifactId>spring-cloud-starter-zuul</artifactId>
+                <version>1.4.6.RELEASE</version>
+            </dependency>
+
+
+开启路由网管代理：
+
+    @SpringBootApplication
+    @EnableZuulProxy //开启路由网关代理
+    public class Zuul_Application_9527 {
+
+        public static void main(String[] args) {
+
+            SpringApplication.run(Zuul_Application_9527.class, args);
+        }
+    }
+
+
+路由网关也是一个微服务，需要注册到eureka，
+添加路由网管之前， 每个微服务都需要通过自己的ip和port去访问，路由网关
+的作用就是将微服务的ip和port影藏起来，添加路由网关后可以用下面的方式去访问微服务：
+
+
+//9527: 为zuul微服务的端口；
+http://localhost:9527/微服务名称小写(注意大写找不到)/user/list
+http://www.czy.com:9527/微服务名称小写(注意大写找不到)/user/list
+
+访问之后，如果只有一个微服务，location会自动影藏微服务名称
+
+影藏微服务名称：
+
+# zuul
+zuul:
+  routes:
+    # 微服务名称
+    myUser.serviceId: springcloud-provider-user
+    # 访问微服务的mapping
+    myUser.path: /myuser/**
+  # 影藏zuul所有的通过微服务名称访问
+  ignored-services: "*"
+  # 使得不能通过微服务名称访问
+  # ignored-services: springcloud-provider-user
+  # 前缀
+  prefix: /czy
+
+修改配置之后的访问地址：
+http://www.czy.com:9527/czy/myuser/user/list

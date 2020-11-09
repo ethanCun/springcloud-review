@@ -11,7 +11,7 @@ spring:
   application:
     # 多个服务提供者的名称一致是均衡负载的前提
     #应用名称大写 小写后也变成了大写，所以消费客户端的REST_URI_PREFIX也必须要大写
-    name: springcloud-provider-user
+    name: SPRINGCLOUD-PROVIDER-USER
   datasource:
     type: com.alibaba.druid.pool.DruidDataSource
     driver-class-name: com.mysql.cj.jdbc.Driver

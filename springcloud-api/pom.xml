@@ -10,11 +10,16 @@
     <modelVersion>4.0.0</modelVersion>
 
     <artifactId>springcloud-api</artifactId>
+    <packaging>pom</packaging>
+    <modules>
+        <module>../springcloud-consumer-hystrix-dashboard</module>
+    </modules>
 
     <!--
         当前module需要的依赖， 如果父类中已经配置了
     -->
     <dependencies>
+
         <dependency>
             <groupId>org.projectlombok</groupId>
             <artifactId>lombok</artifactId>

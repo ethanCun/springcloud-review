@@ -1,0 +1,40 @@
+server:
+  port: 9527
+
+
+spring:
+  application:
+    name: springcloud-zuul
+
+
+#eureka
+eureka:
+  client:
+    service-url:
+      defaultZone: http://eureka7001.com:7001/eureka/,http://eureka7002.com:7002/eureka/,http://eureka7003.com:7003/eureka/
+  instance:
+    # 实例名称
+    instance-id: zuul-9527
+    # 显示真实ip
+    prefer-ip-address: true
+
+# 实例跳转信息
+info:
+  app.name: czy-zuul
+  company.name: ethan.com
+
+
+
+# zuul
+zuul:
+  routes:
+    # 微服务名称
+    myUser.serviceId: springcloud-provider-user
+    # 访问微服务的mapping
+    myUser.path: /myuser/**
+  # 影藏zuul所有的通过微服务名称访问
+  ignored-services: "*"
+  # 使得不能通过微服务名称访问
+  # ignored-services: springcloud-provider-user
+  # 前缀
+  prefix: /czy

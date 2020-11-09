@@ -1,5 +1,5 @@
 server:
-  port: 8003
+  port: 8001
 
 mybatis:
   type-aliases-package: com.ethan.springcloud.pojo
@@ -16,7 +16,7 @@ spring:
     driver-class-name: com.mysql.cj.jdbc.Driver
     username: root
     password: czyczy1212
-    url: jdbc:mysql://localhost:3306/db03?characterEncoding=utf8&useUnicode=true&serverTimezone=Asia/Shanghai
+    url: jdbc:mysql://localhost:3306/db01?characterEncoding=utf8&useUnicode=true&serverTimezone=Asia/Shanghai
 
 
 
@@ -30,7 +30,9 @@ eureka:
       defaultZone: http://eureka7001.com:7001/eureka/,http://eureka7002.com:7002/eureka/,http://eureka7003.com:7003/eureka/
   instance:
     # 改变应用status描述
-    instance-id: user-provider-8003
+    instance-id: user-provider-hystrix-8001
+    # 展示ip地址
+    prefer-ip-address: true
 
 # actuator监控配置信息 点击微服务的status信息会跳转到这个页面
 info:

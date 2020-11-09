@@ -3,19 +3,21 @@
          xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <parent>
-        <artifactId>springcloud</artifactId>
+        <artifactId>springcloud-provider-user-8003</artifactId>
         <groupId>com.ethan</groupId>
         <version>1.0-SNAPSHOT</version>
+        <relativePath>../springcloud-provider-user-8003/pom.xml</relativePath>
     </parent>
     <modelVersion>4.0.0</modelVersion>
 
-    <artifactId>springcloud-provider-user-8001</artifactId>
+    <artifactId>springcloud-provider-hystrix-user-8001</artifactId>
+
 
     <dependencies>
 
         <!--
-            拿到api下面的实体类
-        -->
+      拿到api下面的实体类
+  -->
         <dependency>
             <groupId>com.ethan</groupId>
             <artifactId>springcloud-api</artifactId>
@@ -105,10 +107,10 @@
             <artifactId>spring-boot-starter-actuator</artifactId>
         </dependency>
 
-
         <!--
-            Hystrix服务监控 服务降级和服务熔断
+            Hystrix服务熔断与降级
         -->
+        <!-- https://mvnrepository.com/artifact/org.springframework.cloud/spring-cloud-starter-hystrix -->
         <dependency>
             <groupId>org.springframework.cloud</groupId>
             <artifactId>spring-cloud-starter-hystrix</artifactId>
